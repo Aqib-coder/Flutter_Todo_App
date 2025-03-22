@@ -37,8 +37,19 @@ class _TodoPageState extends State<TodoPage> {
     setState(() {
       db.Tasks[index][1] = !db.Tasks[index][1];
     });
-    db.Tasks.removeAt(index);
+    // db.Tasks.removeAt(index);
     db.update_data();
+  }
+
+  void onDelete(int index) {
+    if (index >= 0 && index < db.Tasks.length) {
+      // Check index range
+      setState(() {
+        db.Tasks.removeAt(index);
+      });
+    } else {
+      print("Error: Invalid index $index, Tasks length: ${db.Tasks.length}");
+    }
   }
 
   void SaveNewTask() {
@@ -75,7 +86,8 @@ class _TodoPageState extends State<TodoPage> {
               return TodoTile(
                   taskname: db.Tasks[index][0],
                   taskStatus: db.Tasks[index][1],
-                  onChanged: (value) => onChange(value, index));
+                  onChanged: (value) => onChange(value, index),
+                  onDelete: () => onDelete(index));
             },
 
             // children: [
